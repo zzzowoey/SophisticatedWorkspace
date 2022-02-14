@@ -30,6 +30,12 @@ repositories {
     maven { // TOP
         url "https://maven.k-4u.nl"
     }
+    maven {
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 version = '1.0'
@@ -134,14 +140,13 @@ dependencies {
 
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
+    compileOnly fg.deobf("curse.maven:craftingtweaks-233071:${crafting_tweaks_cf_file_id}")
+    runtimeOnly fg.deobf("curse.maven:craftingtweaks-233071:${crafting_tweaks_cf_file_id}")
+    compileOnly fg.deobf("curse.maven:balm-531761:${balm_cf_file_id}")
+    runtimeOnly fg.deobf("curse.maven:balm-531761:${balm_cf_file_id}")
     implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}") {
         transitive = false
     }
-
-//    implementation fg.deobf("curse.maven:wildnature:2837635")
-//    implementation fg.deobf("curse.maven:voxelmap:2765032")
-//    implementation fg.deobf("curse.maven:minimap:2849263")
-//    implementation fg.deobf("curse.maven:xaero:2836597")
 
     implementation project(':SophisticatedBackpacks')
     implementation project(':SophisticatedStorage')
