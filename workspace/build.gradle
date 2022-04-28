@@ -64,6 +64,9 @@ minecraft {
             // property 'forge.logging.console.level', 'debug'
 
             mods {
+                SophisticatedCore {
+                    source project(':SophisticatedCore').sourceSets.main
+                }
                 SophisticatedBackpacks {
                     source project(':SophisticatedBackpacks').sourceSets.main
                 }
@@ -86,6 +89,9 @@ minecraft {
             // property 'forge.logging.console.level', 'debug'
 
             mods {
+                SophisticatedCore {
+                    source project(':SophisticatedCore').sourceSets.main
+                }
                 SophisticatedBackpacks {
                     source project(':SophisticatedBackpacks').sourceSets.main
                 }
@@ -106,9 +112,10 @@ minecraft {
 
             // Recommended logging level for the console
             // property 'forge.logging.console.level', 'debug'
-            args '--all', '--output', file('src/generated/resources/'), '--existing', sourceSets.main.resources.srcDirs[0]
-
             mods {
+                SophisticatedCore {
+                    source project(':SophisticatedCore').sourceSets.main
+                }
                 SophisticatedBackpacks {
                     source project(':SophisticatedBackpacks').sourceSets.main
                 }
@@ -144,6 +151,7 @@ dependencies {
 
     implementation project(':SophisticatedBackpacks')
     implementation project(':SophisticatedStorage')
+    implementation project(':SophisticatedCore')
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
