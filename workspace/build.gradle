@@ -137,6 +137,7 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
+/*
     if (findProject(':TheOneProbe') != null) {
         implementation project(':TheOneProbe')
     } else {
@@ -144,9 +145,10 @@ dependencies {
             transitive = false
         })
     }
+*/
 
-    compileOnly fg.deobf("mezz.jei:jei-${jei_mc_version}:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${jei_mc_version}:${jei_version}")
+//    compileOnly fg.deobf("mezz.jei:jei-${jei_mc_version}-api:${jei_version}")
+//    runtimeOnly fg.deobf("mezz.jei:jei-${jei_mc_version}:${jei_version}")
 
     implementation project(':SophisticatedBackpacks')
     implementation project(':SophisticatedStorage')

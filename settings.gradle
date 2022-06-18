@@ -1,4 +1,4 @@
-rootProject.name = '1.18'
+rootProject.name = '1.19'
 include 'SophisticatedBackpacks'
 include 'SophisticatedStorage'
 include 'SophisticatedCore'
