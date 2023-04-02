@@ -184,6 +184,8 @@ dependencies {
     implementation project(':SophisticatedBackpacks')
     implementation project(':SophisticatedStorage')
     implementation project(':SophisticatedCore')
+
+    runtimeOnly fg.deobf("curse.maven:arsnouveau-401955:4468989")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
