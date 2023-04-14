@@ -185,7 +185,9 @@ dependencies {
     implementation project(':SophisticatedStorage')
     implementation project(':SophisticatedCore')
 
-    runtimeOnly fg.deobf("curse.maven:arsnouveau-401955:4468989")
+    runtimeOnly fg.deobf("curse.maven:ctm-267602:4393695")
+    runtimeOnly fg.deobf("curse.maven:chipped-456956:4463479")
+    runtimeOnly fg.deobf("curse.maven:resourcefullib-570073:4477753")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
