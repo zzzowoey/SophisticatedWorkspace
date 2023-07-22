@@ -1,5 +1,6 @@
 /.gradle/
 /.idea/
+/workspace/.gradle/
 /workspace/build/
 /workspace/run/
 /workspace/run2/

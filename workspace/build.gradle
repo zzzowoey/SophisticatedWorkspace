@@ -1,41 +1,58 @@
 buildscript {
     repositories {
-        maven { url = 'https://maven.minecraftforge.net/' }
-        maven { url = 'https://maven.parchmentmc.org' }
         maven { url = "https://plugins.gradle.org/m2/" }
-        jcenter()
+        maven { url = "https://maven.fabricmc.net/" }
+        maven { url = "https://server.bbkr.space/artifactory/libs-release/" }
+        maven { url = "https://maven.quiltmc.org/repository/release" }
         mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.parchmentmc:librarian:1.+'
-        classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.4.0'
+        gradlePluginPortal()
     }
 }
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-apply plugin: 'eclipse'
-apply plugin: 'com.matthewprenger.cursegradle'
-apply plugin: 'maven-publish'
+plugins {
+    id "fabric-loom" version "1.2.+"
+
+    id "io.github.juuxel.loom-vineflower" version "1.11.0" // Vineflower, a better decompiler
+    id "io.github.p03w.machete" version "1.+" // automatic jar compressing on build
+
+    id "maven-publish"
+}
 
 repositories {
-    maven { url 'https://www.dogforce-games.com/maven/' }
-    maven { // JEI
-        url "https://dvs1.progwml6.com/files/maven"
+    mavenLocal()
+    mavenCentral()
+
+    maven { url = "https://maven.quiltmc.org/repository/release" } // QM
+    maven { url = 'https://maven.parchmentmc.org' } // Parchment
+
+    maven { url = "https://maven.fabricmc.net/" } // FAPI, Loader
+    maven { url = "https://mvn.devos.one/snapshots/" } // Porting Lib, Forge Tags, Milk Lib, serialization-hooks
+    maven { url = "https://jitpack.io/" } // for Porting Lib: Mixin Extras, Fabric ASM
+    maven {// Forge Config API Port
+        name = "Fuzs Mod Resources"
+        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
     }
-    maven { // Patchouli
-        url "https://maven.blamejared.com"
+    maven {// Modern KeyBinding
+        url "https://maven.nova-committee.cn/releases"
     }
-    maven { // TOP
-        url "https://maven.k-4u.nl"
-    }
-    maven {
-        url "https://www.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
+    //maven { url = "https://cursemaven.com" }
+
+    maven { url = "https://maven.terraformersmc.com/" } // Emi
+    maven { url = "https://maven.shedaniel.me/" } // REI and deps
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
         }
     }
+
+    maven { url = "https://maven.ladysnake.org/releases" } // CCA, for Trinkets
+    maven { url = "https://modmaven.dev" } // Jei
 }
 
 version = '1.0'
@@ -44,157 +61,123 @@ archivesBaseName = 'modid'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-minecraft {
-    mappings channel: 'parchment' , version: "$parchment_version"
-//    accessTransformer = file('workspace/accesstransformer.cfg')
-
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
+loom {
     runs {
+        datagen {
+            client()
+            ideConfigGenerated = true
+
+            name "Data Generation"
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}"
+            vmArg "-Dfabric-api.datagen.modid=workspace"
+            vmArg "-Dmixin.debug.export=true"
+            source sourceSets.main
+            runDir "run/test_client"
+        }
+
         client {
-            workingDirectory project.file('run')
-//            properties 'mixin.env.disableRefMap': 'true'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            jvmArg '-XX:+AllowEnhancedClassRedefinition'
-            jvmArg '-XX:HotswapAgent=fatjar'
+            client()
+            ideConfigGenerated = true
 
-            // Recommended logging data for a userdev environment
-            // property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            // property 'forge.logging.console.level', 'debug'
-
-            mods {
-                SophisticatedCore {
-                    source project(':SophisticatedCore').sourceSets.main
-                }
-                SophisticatedBackpacks {
-                    source project(':SophisticatedBackpacks').sourceSets.main
-                }
-                SophisticatedStorage {
-                    source project(':SophisticatedStorage').sourceSets.main
-                }
-            }
+            vmArg "-Dmixin.debug.export=true"
+            source sourceSets.main
+            runDir "run/test_client"
         }
-
-        client2 {
-            workingDirectory project.file('run')
-//            properties 'mixin.env.disableRefMap': 'true'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            jvmArg '-XX:+AllowEnhancedClassRedefinition'
-            jvmArg '-XX:HotswapAgent=fatjar'
-
-            // Recommended logging data for a userdev environment
-            // property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            // property 'forge.logging.console.level', 'debug'
-
-            mods {
-                SophisticatedCore {
-                    source project(':SophisticatedCore').sourceSets.main
-                }
-                SophisticatedBackpacks {
-                    source project(':SophisticatedBackpacks').sourceSets.main
-                }
-                SophisticatedStorage {
-                    source project(':SophisticatedStorage').sourceSets.main
-                }
-            }
-        }
-
         server {
-            workingDirectory project.file('run')
-//            properties 'mixin.env.disableRefMap': 'true'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            jvmArg '-XX:+AllowEnhancedClassRedefinition'
-            jvmArg '-XX:HotswapAgent=fatjar'
+            server()
+            ideConfigGenerated = true
 
-            // Recommended logging data for a userdev environment
-            // property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            // property 'forge.logging.console.level', 'debug'
-
-            mods {
-                SophisticatedCore {
-                    source project(':SophisticatedCore').sourceSets.main
-                }
-                SophisticatedBackpacks {
-                    source project(':SophisticatedBackpacks').sourceSets.main
-                }
-                SophisticatedStorage {
-                    source project(':SophisticatedStorage').sourceSets.main
-                }
-            }
+            vmArg "-Dmixin.debug.export=true"
+            source sourceSets.main
+            runDir "run/test_server"
         }
+        /*gametest {
+            server()
+            name "Test"
+            source sourceSets.main
+            vmArg "-Dfabric-api.gametest"
+            vmArg "-Dfabric-api.gametest.report-file=${project.buildDir}/junit.xml"
+            runDir "run/gametest_server"
+        }*/
+    }
 
-        data {
-            workingDirectory project.file('run')
-//            properties 'mixin.env.disableRefMap': 'true'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+    interfaceInjection {
+        enableDependencyInterfaceInjection = true
+    }
 
-            // Recommended logging data for a userdev environment
-            // property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            // property 'forge.logging.console.level', 'debug'
-            mods {
-                SophisticatedCore {
-                    source project(':SophisticatedCore').sourceSets.main
-                }
-                SophisticatedBackpacks {
-                    source project(':SophisticatedBackpacks').sourceSets.main
-                }
-                SophisticatedStorage {
-                    source project(':SophisticatedStorage').sourceSets.main
-                }
-            }
+    mods {
+        workspace {
+            sourceSet sourceSets.main
+        }
+        sophisticatedcore {
+            sourceSet project(':SophisticatedCore').sourceSets.main
+        }
+        sophisticatedbackpacks {
+            sourceSet project(':SophisticatedBackpacks').sourceSets.main
         }
     }
-}
-
-jar {
-  duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 dependencies {
-    // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    setup(dependencies)
+    devEnv(dependencies)
+    compat(dependencies)
+    dependencies(dependencies)
+}
 
-/*
-    if (findProject(':TheOneProbe') != null) {
-        implementation project(':TheOneProbe')
-    } else {
-        implementation fg.deobf(project.dependencies.create("mcjty.theoneprobe:theoneprobe:${top_version}") {
-            transitive = false
-        })
+def setup(DependencyHandler deps) {
+    deps.minecraft("com.mojang:minecraft:$minecraft_version")
+    deps.mappings(loom.layered {
+        it.mappings("org.quiltmc:quilt-mappings:$minecraft_version+build.$qm_version:intermediary-v2")
+        if (parchment_version != "none")
+            it.parchment("org.parchmentmc.data:parchment-$parchment_version@zip")
+        it.officialMojangMappings { nameSyntheticMembers = false }
+    })
+    deps.modImplementation("net.fabricmc:fabric-loader:$loader_version")
+}
+
+def devEnv(DependencyHandler deps) {
+    deps.modLocalRuntime("maven.modrinth:lazydfu:$lazy_dfu_version")
+    deps.modLocalRuntime("dev.emi:trinkets:$trinkets_version")
+}
+
+def dependencies(DependencyHandler deps) {
+    deps.modImplementation("net.fabricmc.fabric-api:fabric-api:$fabric_version")
+
+    deps.implementation deps.project(path: ':SophisticatedBackpacks', configuration: "namedElements")
+    // deps.implementation deps.project(path: ':SophisticatedStorage', configuration: "namedElements")
+    deps.implementation deps.project(path: ':SophisticatedCore', configuration: "namedElements")
+}
+
+def compat(DependencyHandler deps) {
+    recipeViewers(deps)
+}
+
+def recipeViewers(DependencyHandler deps) {
+    switch (recipe_viewer.toLowerCase(Locale.ROOT)) {
+        case "emi":
+            //deps.modCompileOnly("dev.emi:emi-fabric:$emi_version:api")
+            deps.modLocalRuntime("dev.emi:emi-fabric:$emi_version")
+            break
+        case "jei":
+            //deps.modCompileOnly("mezz.jei:jei-$minecraft_version-fabric:$jei_version")
+            deps.modLocalRuntime("mezz.jei:jei-$minecraft_version-fabric:$jei_version")
+            break
+        /*case "rei":
+            deps.modCompileOnly("me.shedaniel:RoughlyEnoughItems-fabric:$rei_version")
+            deps.modLocalRuntime("me.shedaniel:RoughlyEnoughItems-fabric:$rei_version");
+            break
+         */
+        case "disabled": break
+        default: println("Unknown recipe viewer specified: $recipe_viewer. Must be JEI, REI, EMI, or disabled.")
     }
-*/
-
-//    compileOnly fg.deobf("mezz.jei:jei-${jei_mc_version}-api:${jei_version}")
-//    runtimeOnly fg.deobf("mezz.jei:jei-${jei_mc_version}:${jei_version}")
-
-    implementation project(':SophisticatedBackpacks')
-    implementation project(':SophisticatedStorage')
-    implementation project(':SophisticatedCore')
-
-    runtimeOnly fg.deobf("curse.maven:ctm-267602:4393695")
-    runtimeOnly fg.deobf("curse.maven:refinedstorage-243076:4465872")
-/*
-    runtimeOnly fg.deobf("curse.maven:chipped-456956:4463479")
-    runtimeOnly fg.deobf("curse.maven:resourcefullib-570073:4477753")
-*/
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
 jar {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
     manifest {
         attributes([
             "Specification-Title": "examplemod",
@@ -217,6 +200,7 @@ def reobfArtifact = artifacts.add('default', reobfFile) {
     type 'jar'
     builtBy 'reobfJar'
 }
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
