@@ -1,12 +1,12 @@
 [submodule "SophisticatedStorage"]
 	path = SophisticatedStorage
-	url = https://github.com/P3pp3rF1y/SophisticatedStorage.git
-	branch = 1.19.x-dev
+	url = https://github.com/Salandora/SophisticatedStorage.git
+	branch = 1.19.x-fabric-dev
 [submodule "SophisticatedBackpacks"]
 	path = SophisticatedBackpacks
-	url = https://github.com/P3pp3rF1y/SophisticatedBackpacks.git
-	branch = 1.19.x-dev
+	url = https://github.com/Salandora/SophisticatedBackpacks.git
+	branch = 1.19.x-fabric-dev
 [submodule "SophisticatedCore"]
 	path = SophisticatedCore
-	url = https://github.com/P3pp3rF1y/SophisticatedCore.git
-	branch = 1.19.x-dev
+	url = https://github.com/Salandora/SophisticatedCore.git
+	branch = 1.19.x-fabric-dev
