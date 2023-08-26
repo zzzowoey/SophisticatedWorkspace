@@ -4,6 +4,7 @@ pluginManagement {
         maven { url = "https://maven.fabricmc.net/" }
         maven { url = "https://server.bbkr.space/artifactory/libs-release/" }
         maven { url = "https://maven.quiltmc.org/repository/release" }
+        mavenLocal()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -13,6 +14,6 @@ rootProject.name = 'Sophisticated-fabric'
 
 include 'SophisticatedCore'
 include 'SophisticatedBackpacks'
-// include 'SophisticatedStorage'
+include 'SophisticatedStorage'
 
 include 'workspace'
