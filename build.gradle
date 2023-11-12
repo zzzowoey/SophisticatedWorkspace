@@ -53,10 +53,10 @@ allprojects {
             name = "entity reach"
             url = "https://maven.jamieswhiteshirt.com/libs-release/"
         }
-        maven { url = "https://maven.ladysnake.org/releases" } // CCA, for Trinkets
-        maven { url = "https://modmaven.dev" } // Jei
-        maven { url = "https://www.cursemaven.com" } // Balm, CraftingTweaks
         maven { url = 'https://maven.blamejared.com' }
+        maven { url = "https://modmaven.dev" } // Jei
+        maven { url = "https://maven.ladysnake.org/releases" } // CCA, for Trinkets
+        maven { url = "https://www.cursemaven.com" } // Balm, CraftingTweaks
         mavenCentral()
         mavenLocal()
     }
