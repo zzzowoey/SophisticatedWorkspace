@@ -1,6 +1,10 @@
 //file:noinspection GrMethodMayBeStatic
 buildscript {
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        maven { url 'https://maven.aliyun.com/repository/google/'}
+        maven { url 'https://maven.aliyun.com/repository/jcenter/'}
+
         maven { url = "https://plugins.gradle.org/m2/" }
         maven { url = "https://maven.fabricmc.net/" }
         maven { url = "https://server.bbkr.space/artifactory/libs-release/" }
@@ -16,6 +20,10 @@ plugins {
 
 repositories {
     mavenLocal()
+    maven { url 'https://maven.aliyun.com/repository/public/' }
+    maven { url 'https://maven.aliyun.com/repository/google/'}
+    maven { url 'https://maven.aliyun.com/repository/jcenter/'}
+
     mavenCentral()
 
     maven { url = "https://maven.quiltmc.org/repository/release" } // QM
@@ -91,18 +99,36 @@ def setup(DependencyHandler deps) {
     deps.modLocalRuntime("net.fabricmc.fabric-api:fabric-api:$fabric_version")
 
     // Core requirements
-    deps.modLocalRuntime("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:$forge_config_api_port_version")
-    deps.modLocalRuntime("committee.nova.mkb.fabric:mkb-${minecraft_version}:${mkb_mod_version}")
+    deps.modLocalRuntime("curse.maven:forge-config-api-port-fabric-547434:4583000") {
+        exclude group:"net.fabricmc.fabric-api"
+    }
 }
 
 def devEnv(DependencyHandler deps) {
-    deps.modLocalRuntime("dev.emi:trinkets:$trinkets_version")
-    deps.modLocalRuntime("me.shedaniel.cloth:cloth-config-fabric:$cloth_config_version")
-    deps.modLocalRuntime("curse.maven:balm-500525:${balm_cf_file_id}")
-    deps.modLocalRuntime("curse.maven:craftingtweaks-502516:${crafting_tweaks_cf_file_id}")
-    deps.modLocalRuntime("com.terraformersmc:modmenu:$modmenu_version")
-    deps.modLocalRuntime("maven.modrinth:sodium:mc${minecraft_version}-${sodium_version}")
-    deps.modLocalRuntime("maven.modrinth:indium:${indium_version}+mc${minecraft_version}")
+    deps.modLocalRuntime("dev.emi:trinkets:$trinkets_version") {
+        exclude group:"net.fabricmc.fabric-api"
+    }
+    deps.modLocalRuntime("me.shedaniel.cloth:cloth-config-fabric:$cloth_config_version") {
+        exclude group:"net.fabricmc.fabric-api"
+    }
+    deps.modLocalRuntime("curse.maven:balm-500525:${balm_cf_file_id}") {
+        exclude group:"net.fabricmc.fabric-api"
+    }
+    deps.modLocalRuntime("curse.maven:craftingtweaks-502516:${crafting_tweaks_cf_file_id}") {
+        exclude group:"net.fabricmc.fabric-api"
+    }
+    deps.modLocalRuntime("com.terraformersmc:modmenu:$modmenu_version") {
+        exclude group:"net.fabricmc.fabric-api"
+    }
+    deps.modLocalRuntime("maven.modrinth:sodium:mc${minecraft_version}-${sodium_version}") {
+        exclude group:"net.fabricmc.fabric-api"
+    }
+    deps.modLocalRuntime("maven.modrinth:indium:${indium_version}+mc${minecraft_version}") {
+        exclude group:"net.fabricmc.fabric-api"
+    }
+    deps.modLocalRuntime("committee.nova.mkb.fabric:mkb-${minecraft_version}:${mkb_mod_version}") {
+        exclude group:"net.fabricmc.fabric-api"
+    }
 
     // deps.modLocalRuntime("vazkii.botania:Botania:$botania_version")
     // deps.modLocalRuntime("vazkii.patchouli:Patchouli:$patchouli_version")
@@ -110,9 +136,15 @@ def devEnv(DependencyHandler deps) {
 
 def recipeViewers(DependencyHandler deps) {
     switch (recipe_viewer.toLowerCase(Locale.ROOT)) {
-        case "emi": deps.modLocalRuntime("dev.emi:emi-fabric:$emi_version"); break
-        case "jei": deps.modLocalRuntime("mezz.jei:jei-$minecraft_version-fabric:$jei_version"); break
-        case "rei": deps.modLocalRuntime("me.shedaniel:RoughlyEnoughItems-fabric:$rei_version"); break
+        case "emi": deps.modLocalRuntime("dev.emi:emi-fabric:$emi_version") {
+            exclude group:"net.fabricmc.fabric-api"
+        }; break
+        case "jei": deps.modLocalRuntime("mezz.jei:jei-$minecraft_version-fabric:$jei_version") {
+            exclude group:"net.fabricmc.fabric-api"
+        }; break
+        case "rei": deps.modLocalRuntime("me.shedaniel:RoughlyEnoughItems-fabric:$rei_version") {
+            exclude group:"net.fabricmc.fabric-api"
+        }; break
         case "disabled": break
         default: println("Unknown recipe viewer specified: $recipe_viewer. Must be JEI, REI, EMI, or disabled.")
     }
