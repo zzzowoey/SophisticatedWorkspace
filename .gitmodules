@@ -1,12 +1,12 @@
 [submodule "SophisticatedStorage"]
 	path = SophisticatedStorage
-	url = https://github.com/LangYueMc/SophisticatedStorage.git
+	url = https://github.com/zzzowoey/SophisticatedStorage.git
 	branch = 1.20.1-fabric-dev
 [submodule "SophisticatedBackpacks"]
 	path = SophisticatedBackpacks
-	url = https://github.com/LangYueMc/SophisticatedBackpacks.git
+	url = https://github.com/zzzowoey/SophisticatedBackpacks.git
 	branch = 1.20.1-fabric-dev
 [submodule "SophisticatedCore"]
 	path = SophisticatedCore
-	url = https://github.com/LangYueMc/SophisticatedCore.git
+	url = https://github.com/zzzowoey/SophisticatedCore.git
 	branch = 1.20.1-fabric-dev
