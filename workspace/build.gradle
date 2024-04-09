@@ -129,6 +129,9 @@ def devEnv(DependencyHandler deps) {
     deps.modLocalRuntime("committee.nova.mkb.fabric:mkb-${minecraft_version}:${mkb_mod_version}") {
         exclude group:"net.fabricmc.fabric-api"
     }
+    deps.modLocalRuntime("com.blamejared.searchables:Searchables-fabric-${minecraft_version}:${searchables_version}") {
+        exclude group:"net.fabricmc.fabric-api"
+    }
 
     // deps.modLocalRuntime("vazkii.botania:Botania:$botania_version")
     // deps.modLocalRuntime("vazkii.patchouli:Patchouli:$patchouli_version")
